@@ -1,0 +1,48 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: gateway
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 124.71.65.12:8848
+      config:
+        file-extension: yaml
+knife4j:
+  gateway:
+    # 是否开启
+    enabled: true
+    # 指定服务发现的模式聚合微服务文档，并且是默认`default`分组
+    strategy: discover
+    # 子服务存在其他分组情况，聚合其他分组，只能手动配置
+    routes:
+      - name: 文件服务-1
+        # 服务名称(Optional)
+        service-name: service-file
+        # 路由前缀
+        context-path: /service-file
+        # 排序
+        order: 2
+      - name: 分析服务-2
+        service-name: service-analyse
+        # 路由前缀
+        context-path: /service-analyse
+    # 服务发现模式的配置
+    discover:
+      # 开启
+      enabled: true
+        # 指定版本号(swagger2|openapi3)
+        version : openapi3
+        # 需要排除的微服务(eg:网关服务)
+        excluded-services:
+          - gateway-service
+        # 如果子服务是OpenAPI3，并且有个性化配置
+        oas3:
+          url: /v3/api-docs?group=default
+          oauth2-redirect-url: ''
+          validator-url: ''
+        # 如何子服务是Swagger2，并且个性化配置
+        swagger2:
+          url: /v2/api-docs?group=default

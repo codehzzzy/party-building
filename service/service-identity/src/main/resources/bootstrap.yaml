@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: service-identity
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: 124.71.65.12:8848
+      config:
+        file-extension: yaml
